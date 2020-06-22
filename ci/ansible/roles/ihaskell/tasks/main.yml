@@ -6,6 +6,6 @@
 - name: Start iHaskell Jupyter notebook
   docker_compose:
     project_src: "{{ coder_apps_work_dir }}"
-    services: ihaskell-notebook
+    files: ihaskell-compose.yaml
     state: present
   register: output

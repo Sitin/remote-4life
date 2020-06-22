@@ -6,6 +6,6 @@
 - name: Start nginx + SSL docker service
   docker_compose:
     project_src: "{{ coder_apps_work_dir }}"
-    services: nginx-proxy, letsencrypt-nginx-proxy-companion
+    files: nginx-proxy-compose.yaml
     state: present
   register: output
