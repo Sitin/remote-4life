@@ -1,0 +1,17 @@
+---
+#------------------------------------------------------------
+# Setup Basic Auth
+#------------------------------------------------------------
+
+- name: Install passlib from pip
+  pip:
+    name: passlib==1.7.2
+
+- name: Setup basic auth password
+  htpasswd:
+    path: "/etc/nginx/htpasswd/{{ theia_domain }}"
+    name: "{{ username }}"
+    password: "{{ password }}"
+    owner: root
+    group: www-data
+    mode: 0644

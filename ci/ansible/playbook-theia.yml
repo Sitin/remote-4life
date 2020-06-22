@@ -4,7 +4,7 @@
   gather_facts: no
   pre_tasks:
   - name: Install python for Ansible
-    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python3 python-is-python3)"
+    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python3)"
     register: output
     changed_when: output.stdout != ""
 
@@ -15,3 +15,4 @@
   - init
   - system-dependencies
   - repository-setup
+  - security

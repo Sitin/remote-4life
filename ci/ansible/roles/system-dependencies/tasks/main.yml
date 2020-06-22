@@ -27,11 +27,16 @@
     append: yes
 
 #------------------------------------------------------------
-# Install Git
+# Install additional dependencies
 #------------------------------------------------------------
 
-- name: Install Git
+- name: Install additional dependencies
   apt:
-    name: git
+    name: git, python3-pip, python-is-python3, supervisor, apache2-utils
     state: latest
     update_cache: yes
+
+- name: Make sure that supervisord service is running
+  systemd:
+    state: started
+    name: supervisor
