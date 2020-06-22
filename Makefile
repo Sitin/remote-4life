@@ -4,7 +4,7 @@ include .env
 export $(shell sed 's/=.*//' .env)
 
 ansible_path := ./ci/ansible
-ansible_prefix := ansible-playbook -u root --private-key=$(SSH_KEY_FILE) -i $(ansible_path)/inventory.yml
+ansible_prefix := ansible-playbook -u root --private-key=$(SSH_PRIVATE_KEY) -i $(ansible_path)/inventory.yml
 
 all: deploy
 
