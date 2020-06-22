@@ -10,7 +10,7 @@
 
 - hosts: all
   vars_files:
-  - vars/theia.yml
+  - vars/main.yml
   roles:
   - init
   - system-dependencies
