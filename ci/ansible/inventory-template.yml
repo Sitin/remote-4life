@@ -1,0 +1,3 @@
+all:
+  hosts:
+    {{ THEIA_DOMAIN }}:

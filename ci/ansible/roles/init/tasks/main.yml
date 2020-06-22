@@ -1,0 +1,48 @@
+---
+#------------------------------------------------------------
+# User Setup
+#------------------------------------------------------------
+
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: Create the main Theia user
+  user:
+    name: "{{ theia_username }}"
+    comment: Theia user
+    create_home: yes
+    home: "{{ theia_home_dir }}"
+    groups: admin, sudo, wheel
+    shell: /usr/bin/bash
+    append: yes
+    state: present
+    skeleton: "/etc/skel"
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: "{{ theia_username }}"
+    state: present
+    key: "{{ lookup('file', '{{ ssh_key_file }}') }}"
+
+#------------------------------------------------------------
+# Basic Firewall Setup
+#------------------------------------------------------------
+
+- name: Allow inbound traffic to OpenSSH
+  ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Enable UFW
+  ufw:
+    state: enabled

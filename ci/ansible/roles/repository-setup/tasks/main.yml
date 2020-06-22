@@ -1,0 +1,37 @@
+---
+#------------------------------------------------------------
+# Install Docker
+#------------------------------------------------------------
+
+- name: Install Docker prerequisites
+  apt:
+    name: apt-transport-https, ca-certificates, curl, software-properties-common
+    state: latest
+    update_cache: yes
+
+- name: Ensure docker is at the latest version
+  apt:
+    name: docker.io, docker-compose
+    state: present
+    update_cache: yes
+
+- name: Make sure that Docker service is running
+  systemd:
+    state: started
+    name: docker
+
+- name: Allow the main Theia to run docker without sudo
+  user:
+    name: "{{ theia_username }}"
+    groups: docker
+    append: yes
+
+#------------------------------------------------------------
+# Install Git
+#------------------------------------------------------------
+
+- name: Install Git
+  apt:
+    name: git
+    state: latest
+    update_cache: yes

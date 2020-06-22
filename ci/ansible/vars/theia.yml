@@ -1,0 +1,8 @@
+---
+admin_username: root
+theia_username: theia
+theia_home_dir: "/home/{{ theia_username }}"
+theia_work_dir: "{{ theia_home_dir }}/eclipse-theia"
+lets_encrypt_email: "{{ lookup('env', 'EMAIL') }}"
+server_name: "{{ lookup('env', 'THEIA_DOMAIN') }}"
+ssh_key_file: "{{ lookup('env', 'SSH_KEY_FILE') }}"
