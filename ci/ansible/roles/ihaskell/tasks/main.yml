@@ -1,11 +1,11 @@
 ---
 #------------------------------------------------------------
-# Start nginx + Let's Encrypt reverse proxy
+# Start iHaskell Jupyter notebook
 #------------------------------------------------------------
 
-- name: Start nginx + SSL docker service
+- name: Start iHaskell Jupyter notebook
   docker_compose:
     project_src: "{{ coder_apps_work_dir }}"
-    services: nginx-proxy, letsencrypt-nginx-proxy-companion
+    services: ihaskell-notebook
     state: present
   register: output
