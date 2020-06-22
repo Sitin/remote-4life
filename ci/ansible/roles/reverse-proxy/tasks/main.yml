@@ -1,0 +1,11 @@
+---
+#------------------------------------------------------------
+# Start nginx + Let's Encrypt reverse proxy
+#------------------------------------------------------------
+
+- name: Start nginx + SSL docker service
+  docker_compose:
+    project_src: .
+    services: nginx-proxy, letsencrypt-nginx-proxy-companion
+    state: present
+  register: output
