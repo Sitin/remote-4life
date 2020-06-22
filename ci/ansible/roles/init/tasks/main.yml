@@ -16,12 +16,12 @@
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
 
-- name: Create the main Theia user
+- name: Create the main user
   user:
-    name: "{{ theia_username }}"
-    comment: Theia user
+    name: "{{ linux_user }}"
+    comment: Main user
     create_home: yes
-    home: "{{ theia_home_dir }}"
+    home: "{{ user_home_dir }}"
     groups: admin, sudo, wheel
     shell: /usr/bin/bash
     append: yes
@@ -30,7 +30,7 @@
 
 - name: Set authorized key taken from file
   authorized_key:
-    user: "{{ theia_username }}"
+    user: "{{ linux_user }}"
     state: present
     key: "{{ lookup('file', '{{ ssh_key_file }}') }}"
 

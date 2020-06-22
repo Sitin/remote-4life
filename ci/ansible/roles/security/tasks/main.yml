@@ -9,9 +9,9 @@
 
 - name: Setup basic auth password
   htpasswd:
-    path: "/etc/nginx/htpasswd/{{ theia_domain }}"
-    name: "{{ username }}"
-    password: "{{ password }}"
+    path: "/etc/nginx/htpasswd/{{ server_domain }}"
+    name: "{{ auth_username }}"
+    password: "{{ auth_password }}"
     owner: root
     group: www-data
     mode: 0644

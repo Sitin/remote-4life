@@ -20,9 +20,9 @@
     state: started
     name: docker
 
-- name: Allow the main Theia to run docker without sudo
+- name: Allow the main user to run docker without sudo
   user:
-    name: "{{ theia_username }}"
+    name: "{{ linux_user }}"
     groups: docker
     append: yes
 

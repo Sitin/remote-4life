@@ -1,12 +1,9 @@
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Sitin/theia-4life)
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Sitin/remote-4life)
 
-Eclipse Theia For Life
+Remote Coding For Life
 ======================
 
-Setup scripts for remote Eclipse Theia.
-
-> Based on the [How To Set Up the Eclipse Theia Cloud IDE Platform on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-the-eclipse-theia-cloud-ide-platform-on-ubuntu-18-04) 
-> DigitalOcean manuals.
+Setup scripts for remote coding.
 
 Project Setup
 -------------
@@ -14,14 +11,14 @@ Project Setup
 Create a virtual environment and install requirements:
 
 ```shell script
-mkvirtualenv theia-4life --python <path to python 3.7+>
+mkvirtualenv remote-4life --python <path to python 3.7+>
 pip install -r requirements.txt
 ```
 
 Or switch to the virtual environment:
 
 ```shell script
-workon theia-4life
+workon remote-4life
 ```
 
 Initialize the project:

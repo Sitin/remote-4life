@@ -6,5 +6,5 @@ services:
     image: theiaide/theia
     init: true
     environment:
-      - VIRTUAL_HOST=${THEIA_DOMAIN}
-      - LETSENCRYPT_HOST=${THEIA_DOMAIN}
+      - VIRTUAL_HOST=${SERVER_DOMAIN}
+      - LETSENCRYPT_HOST=${SERVER_DOMAIN}
