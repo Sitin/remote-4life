@@ -46,3 +46,15 @@
 - name: Enable UFW
   ufw:
     state: enabled
+
+#------------------------------------------------------------
+# Setup Directories
+#------------------------------------------------------------
+
+- name: Create a workspace directory if it does not exist
+  file:
+    path: "{{ workspace_dir }}"
+    state: directory
+    mode: '0755'
+  become: yes
+  become_user: "{{ linux_user }}"

@@ -2,6 +2,7 @@
 linux_user: "{{ lookup('env', 'LINUX_USER') }}"
 user_home_dir: "/home/{{ linux_user }}"
 coder_apps_work_dir: "{{ user_home_dir }}/coder-apps"
+workspace_dir: "{{ user_home_dir }}/workspace"
 lets_encrypt_email: "{{ lookup('env', 'EMAIL') }}"
 server_domain: "{{ lookup('env', 'SERVER_DOMAIN') }}"
 ssh_key_file: "{{ lookup('env', 'SSH_KEY') }}"

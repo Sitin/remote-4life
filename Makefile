@@ -24,3 +24,12 @@ init:
 
 env:
 	@env
+
+nginx:
+	docker-compose -f nginx-proxy-compose.yaml up
+
+ihaskell:
+	docker-compose -f ihaskell-notebook-compose.yaml up
+
+theia:
+	docker-compose -f eclipse-theia-compose.yaml up
