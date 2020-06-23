@@ -26,7 +26,7 @@ pip-install:
 	@pip install -r requirements.txt
 
 chmod-ssh-keys:
-	@chmod 600 ci/.ssh/id_rsa && chmod 640 ci/.ssh/id_rsa.pub
+	@chmod -f 600 ci/.ssh/id_rsa || : && chmod -f 640 ci/.ssh/id_rsa.pub || :
 
 env:
 	@env
