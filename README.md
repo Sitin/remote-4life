@@ -12,7 +12,6 @@ Create a virtual environment and install requirements:
 
 ```shell script
 mkvirtualenv remote-4life --python <path to python 3.7+>
-pip install -r requirements.txt
 ```
 
 Or switch to the virtual environment:
