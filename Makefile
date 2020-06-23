@@ -20,10 +20,13 @@ check-env:
 create-inventory:
 	@sed 's/{{ SERVER_DOMAIN }}/$(SERVER_DOMAIN)/g' $(ansible_path)/inventory-template.yml > $(ansible_path)/inventory.yml
 
-init: pip-install dotenv
+init: chmod-ssh-keys pip-install
 
 pip-install:
-	pip install -r requirements.txt
+	@pip install -r requirements.txt
+
+chmod-ssh-keys:
+	@chmod 600 ci/.ssh/id_rsa && chmod 640 ci/.ssh/id_rsa.pub
 
 env:
 	@env
