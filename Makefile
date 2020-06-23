@@ -1,5 +1,6 @@
 .PHONY: all, init, deploy
 
+$(shell test -e .env || cp .env-template .env)
 include .env
 export $(shell sed 's/=.*//' .env)
 
@@ -19,8 +20,10 @@ check-env:
 create-inventory:
 	@sed 's/{{ SERVER_DOMAIN }}/$(SERVER_DOMAIN)/g' $(ansible_path)/inventory-template.yml > $(ansible_path)/inventory.yml
 
-init:
-	@test -e .env || cp .env-template .env
+init: pip-install dotenv
+
+pip-install:
+	pip install -r requirements.txt
 
 env:
 	@env
