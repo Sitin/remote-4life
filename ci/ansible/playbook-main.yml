@@ -17,3 +17,5 @@
   - repository-setup
   - security
   - reverse-proxy
+  - ihaskell
+#  - eclipse-theia

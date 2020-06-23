@@ -1,12 +1,12 @@
 ---
 #------------------------------------------------------------
-# Start iHaskell Jupyter notebook
+# Start Eclipse Theia IDE
 #------------------------------------------------------------
 
-- name: Start iHaskell Jupyter notebook
+- name: Start Eclipse Theia IDE
   docker_compose:
     project_src: "{{ coder_apps_work_dir }}"
-    files: ihaskell-compose.yaml
+    files: eclipse-theia-compose.yaml
     state: present
     restarted: yes
   register: output

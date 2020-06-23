@@ -8,4 +8,5 @@
     project_src: "{{ coder_apps_work_dir }}"
     files: nginx-proxy-compose.yaml
     state: present
+    restarted: yes
   register: output
