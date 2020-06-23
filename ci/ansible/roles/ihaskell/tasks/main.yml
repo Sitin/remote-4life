@@ -1,12 +1,12 @@
 ---
 #------------------------------------------------------------
-# Start iHaskell Jupyter notebook
+# Setup iHaskell Jupyter notebook
 #------------------------------------------------------------
 
-- name: Start iHaskell Jupyter notebook
+- name: Setup iHaskell Jupyter notebook
   docker_compose:
     project_src: "{{ coder_apps_work_dir }}"
     files: ihaskell-compose.yaml
-    state: present
+    state: "{{ ihaskell }}"
     restarted: yes
   register: output

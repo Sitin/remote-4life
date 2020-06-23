@@ -1,12 +1,12 @@
 ---
 #------------------------------------------------------------
-# Start Eclipse Theia IDE
+# Setup Eclipse Theia IDE
 #------------------------------------------------------------
 
-- name: Start Eclipse Theia IDE
+- name: Setup Eclipse Theia IDE
   docker_compose:
     project_src: "{{ coder_apps_work_dir }}"
     files: eclipse-theia-compose.yaml
-    state: present
+    state: "{{ theia }}"
     restarted: yes
   register: output
