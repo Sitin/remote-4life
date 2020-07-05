@@ -7,7 +7,7 @@
   pip:
     name: passlib==1.7.2
 
-- name: Setup basic auth password
+- name: Setup basic auth password for the main server
   htpasswd:
     path: "/etc/nginx/htpasswd/{{ server_domain }}"
     name: "{{ auth_username }}"

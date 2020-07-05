@@ -13,9 +13,9 @@
   - vars/main.yml
   roles:
   - init
-  - system-dependencies
+#  - system-dependencies
   - repository-setup
-  - security
+#  - security
   - reverse-proxy
   - ihaskell
-  - eclipse-theia
+#  - eclipse-theia

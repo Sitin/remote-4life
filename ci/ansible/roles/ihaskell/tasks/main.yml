@@ -3,10 +3,36 @@
 # Setup iHaskell Jupyter notebook
 #------------------------------------------------------------
 
-- name: Setup iHaskell Jupyter notebook
-  docker_compose:
-    project_src: "{{ coder_apps_work_dir }}"
-    files: ihaskell-compose.yaml
-    state: "{{ ihaskell }}"
-    restarted: yes
-  register: output
+- name: Setup basic auth password for iHaskell
+  htpasswd:
+    path: "/etc/nginx/htpasswd/{{ ihaskell_domain }}"
+    name: "{{ auth_username }}"
+    password: "{{ auth_password }}"
+    owner: root
+    group: www-data
+    mode: 0644
+
+- name: Create iHaskell service
+  template:
+    src: "../templates/ihaskell.service"
+    dest: /etc/systemd/system/ihaskell.service
+
+- name: Enable iHaskell service
+  service:
+    name: ihaskell
+    enabled: yes
+
+- name: Make shure that iHaskell service is running
+  service:
+    state: started
+    name: ihaskell
+
+#- name: Setup iHaskell Jupyter notebook
+#  docker_compose:
+#    project_src: "{{ coder_apps_work_dir }}"
+#    files: ihaskell-compose.yaml
+#    state: "{{ ihaskell }}"
+#    restarted: yes
+#  register: output
+#  become: yes
+#  become_user: "{{ linux_user }}"

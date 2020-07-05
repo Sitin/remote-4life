@@ -1,2 +1,4 @@
 ansible==2.9.10
 passlib==1.7.2
+ssm-parameter-store==19.11.0
+pyyaml==5.3.1

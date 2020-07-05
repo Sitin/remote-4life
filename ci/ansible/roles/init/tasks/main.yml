@@ -16,7 +16,7 @@
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
 
-- name: Create the main user
+- name: "Create the main user {{ linux_user }}"
   user:
     name: "{{ linux_user }}"
     comment: Main user

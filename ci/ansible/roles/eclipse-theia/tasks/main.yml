@@ -3,6 +3,15 @@
 # Setup Eclipse Theia IDE
 #------------------------------------------------------------
 
+- name: Setup basic auth password for Theia
+  htpasswd:
+    path: "/etc/nginx/htpasswd/{{ theia_domain }}"
+    name: "{{ auth_username }}"
+    password: "{{ auth_password }}"
+    owner: root
+    group: www-data
+    mode: 0644
+
 - name: Setup Eclipse Theia IDE
   docker_compose:
     project_src: "{{ coder_apps_work_dir }}"

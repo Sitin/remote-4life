@@ -148,8 +148,12 @@ passwords.dbm
 # CatBoost
 cb_model.json
 
-# Do not save .env files
+# Secrets and configs
 .env
+.env
+.env-backup
+config.yaml
+ci/.ssh
 
 # Do not save inventory
 inventory.yml

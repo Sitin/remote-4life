@@ -1,0 +1,10 @@
+auth_password: <specify your password for basic HTTP auth>
+auth_username: <specify your username for basic HTTP auth>
+email: <specify your emal>
+ihaskell: present
+ihaskell_domain: <specify virtual host domain for iHaskell>
+linux_user: r4l
+repository_url: https://github.com/Sitin/remote-4life.git
+server_domain: <specify your server domain>
+theia: absent
+theia_domain: <specify virtual host domain for Theia>

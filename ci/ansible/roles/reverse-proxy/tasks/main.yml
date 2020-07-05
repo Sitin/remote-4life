@@ -3,10 +3,17 @@
 # Start nginx + Let's Encrypt reverse proxy
 #------------------------------------------------------------
 
-- name: Start nginx + SSL docker service
-  docker_compose:
-    project_src: "{{ coder_apps_work_dir }}"
-    files: nginx-proxy-compose.yaml
-    state: present
-    restarted: yes
-  register: output
+- name: Create nginx+SSL service
+  template:
+    src: "../templates/docker-reverse-proxy.service"
+    dest: /etc/systemd/system/docker-reverse-proxy.service
+
+- name: Enable nginx+SSL service
+  service:
+    name: docker-reverse-proxy
+    enabled: yes
+
+- name: Make shure that nginx+SSL service is running
+  service:
+    state: started
+    name: docker-reverse-proxy
