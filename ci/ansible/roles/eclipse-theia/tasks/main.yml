@@ -12,10 +12,19 @@
     group: www-data
     mode: 0644
 
-- name: Setup Eclipse Theia IDE
-  docker_compose:
-    project_src: "{{ coder_apps_work_dir }}"
-    files: eclipse-theia-compose.yaml
-    state: "{{ theia }}"
-    restarted: yes
-  register: output
+- name: Create Theia service
+  template:
+    src: "../templates/theia.service"
+    dest: /etc/systemd/system/theia.service
+  notify:
+    - Restart Theia service
+
+- name: Enable Theia service
+  service:
+    name: theia
+    enabled: yes
+
+- name: Make shure that Theia service is running
+  service:
+    state: started
+    name: theia

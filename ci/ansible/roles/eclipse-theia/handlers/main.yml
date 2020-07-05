@@ -1,0 +1,5 @@
+---
+- name: Restart Theia service
+  service:
+    state: restarted
+    name: theia
