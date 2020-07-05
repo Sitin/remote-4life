@@ -10,7 +10,7 @@ services:
     volumes:
       - ${WORKSPACE_DIR}:/home/jovyan/pwd
     environment:
-      - VIRTUAL_HOST=${IHASKEL_DOMAIN}
-      - LETSENCRYPT_HOST=${IHASKEL_DOMAIN}
+      - VIRTUAL_HOST=${IHASKELL_DOMAIN}
+      - LETSENCRYPT_HOST=${IHASKELL_DOMAIN}
       - JUPYTER_ENABLE_LAB=yes
       - JUPYTER_TOKEN=x
