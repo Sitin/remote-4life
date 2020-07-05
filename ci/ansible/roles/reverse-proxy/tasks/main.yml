@@ -7,6 +7,8 @@
   template:
     src: "../templates/docker-reverse-proxy.service"
     dest: /etc/systemd/system/docker-reverse-proxy.service
+  notify:
+  - Restart Docker reverse proxy service
 
 - name: Enable nginx+SSL service
   service:

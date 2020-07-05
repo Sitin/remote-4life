@@ -16,6 +16,8 @@
   template:
     src: "../templates/ihaskell.service"
     dest: /etc/systemd/system/ihaskell.service
+  notify:
+  - Restart iHaskell service
 
 - name: Enable iHaskell service
   service:
@@ -26,13 +28,3 @@
   service:
     state: started
     name: ihaskell
-
-#- name: Setup iHaskell Jupyter notebook
-#  docker_compose:
-#    project_src: "{{ coder_apps_work_dir }}"
-#    files: ihaskell-compose.yaml
-#    state: "{{ ihaskell }}"
-#    restarted: yes
-#  register: output
-#  become: yes
-#  become_user: "{{ linux_user }}"

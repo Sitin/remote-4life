@@ -1,0 +1,5 @@
+---
+- name: Restart Docker reverse proxy service
+  service:
+    state: restarted
+    name: docker-reverse-proxy
