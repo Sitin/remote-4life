@@ -1,9 +1,9 @@
 ---
 #------------------------------------------------------------
-# Remove a DigitalOcean Droplet
+# Remove a DigitalOcean Resources
 #------------------------------------------------------------
 
-- name: Create coder droplet
+- name: Remove coder droplet
   digital_ocean_droplet:
     state: absent
     unique_name: yes

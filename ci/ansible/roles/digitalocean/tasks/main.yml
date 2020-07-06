@@ -1,6 +1,6 @@
 ---
 #------------------------------------------------------------
-# Setup a DigitalOcean Droplet
+# Setup a DigitalOcean Resources
 #------------------------------------------------------------
 
 - name: Discover SSH key

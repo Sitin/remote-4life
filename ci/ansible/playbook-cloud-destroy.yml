@@ -1,5 +1,5 @@
 ---
-- name: Provision cloud resources
+- name: Destroy cloud resources
   hosts: local
   vars_files:
     - vars/main.yml
