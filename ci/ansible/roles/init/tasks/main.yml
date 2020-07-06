@@ -27,7 +27,15 @@
     append: yes
     state: present
     skeleton: "/etc/skel"
-    password: "{{ linux_password }}"
+    password: "{{ linux_password | password_hash('sha512') }}"
+
+- name: Allow SSH connections with password
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: 'PasswordAuthentication no'
+    replace: 'PasswordAuthentication yes'
+  notify:
+  - Reload SSH service
 
 - name: Set authorized key taken from file
   authorized_key:
