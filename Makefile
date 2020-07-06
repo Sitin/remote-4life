@@ -24,10 +24,10 @@ all: deploy
 deploy: setup
 	@$(ansible_prefix) $(ansible_path)/playbook-main.yml
 
-ssh:
+ssh: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa $(linux_user)@$(server_domain)
 
-vnc-tunnel:
+vnc-tunnel: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa -L 59000:localhost:5901 -C -N $(linux_user)@$(server_domain)
 
 setup: chmod-ssh-keys create-inventory
