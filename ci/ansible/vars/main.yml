@@ -2,6 +2,7 @@
 aws_ssm_path: "{{ lookup('env', 'AWS_SSM_PATH') }}"
 ssh_dir: "{{ lookup('env', 'SSH_DIR') }}"
 linux_user: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/linux_user') }}"
+linux_password: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/linux_password') }}"
 user_home_dir: "/home/{{ linux_user }}"
 coder_apps_work_dir: "{{ user_home_dir }}/r4l-apps"
 workspace_dir: "{{ user_home_dir }}/workspace"

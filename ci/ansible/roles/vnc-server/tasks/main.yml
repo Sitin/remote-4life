@@ -3,26 +3,36 @@
 # Setup VNC Server
 #------------------------------------------------------------
 
-- name: Install the GUI and VNC Packages
-  apt: pkg={{ item }} state=installed update_cache=true
-  with_items:
-    - xfce4
-    - xfce4-goodies
-    - tightvncserver
-    - expect
-    - firefox
+- name:  Install the GUI and VNC Packages
+  apt:
+    name: xfce4, xfce4-goodies, tightvncserver, expect, firefox
+    state: latest
+    update_cache: yes
 
 - name: Copy password script for VNC
-  template: src=create_password.sh dest=/home/pass.sh mode=0744
+  template:
+    src: create_password.sh
+    dest: /home/pass.sh
+    mode: 0744
 
 - name: Run password script for VNC
   shell: . /home/pass.sh
 
 - name: Copy the modified "xstartup" file for VNC
-  template: src=xstartup.sh dest=~/.vnc/xstartup mode=0755
+  template:
+    src: xstartup.sh
+    dest: "{{ user_home_dir }}/.vnc/xstartup"
+    mode: 0755
 
-- name: Create a file vncserver in /etc/init.d/ directory
-  template: src=vncserver.j2 dest=/etc/init.d/vncserver owner=root group=root mode=0755
+- name: Create VNC Server service
+  template:
+    src: "../templates/vncserver.service"
+    dest: /etc/systemd/system/vncserver@.service
+    owner: root
+    group: root
 
-- name: Ensure vncserver service is started
-  service: name=vncserver state=restarted enabled=yes
+- name: Ensure that VNC Server service is started with session 1
+  service:
+    name: vncserver@1
+    state: restarted
+    enabled: yes

@@ -27,6 +27,9 @@ deploy: setup
 ssh:
 	@ssh -i ./ci/.ssh/id_rsa $(linux_user)@$(server_domain)
 
+vnc-tunnel:
+	@ssh -i ./ci/.ssh/id_rsa -L 59000:localhost:5901 -C -N $(linux_user)@$(server_domain)
+
 setup: chmod-ssh-keys create-inventory
 
 create-inventory:

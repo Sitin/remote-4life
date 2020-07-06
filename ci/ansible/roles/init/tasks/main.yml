@@ -27,6 +27,7 @@
     append: yes
     state: present
     skeleton: "/etc/skel"
+    password: "{{ linux_password }}"
 
 - name: Set authorized key taken from file
   authorized_key:

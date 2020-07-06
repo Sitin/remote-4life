@@ -13,10 +13,10 @@
   - vars/main.yml
   roles:
   - init
-  - system-dependencies
-  - repository-setup
-  - security
-  - reverse-proxy
-  - ihaskell
-  - eclipse-theia
-  - vnc-server
+#  - system-dependencies
+#  - repository-setup
+#  - security
+#  - reverse-proxy
+#  - ihaskell
+#  - eclipse-theia
+#  - vnc-server
