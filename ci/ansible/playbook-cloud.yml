@@ -1,7 +1,6 @@
 ---
 - name: Provision cloud resources
   hosts: local
-  connection: local
   vars_files:
     - vars/main.yml
   roles:

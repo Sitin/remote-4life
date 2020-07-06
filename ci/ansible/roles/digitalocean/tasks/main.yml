@@ -3,14 +3,46 @@
 # Setup a DigitalOcean Droplet
 #------------------------------------------------------------
 
-- name: Create DigitalOcean coder droplet
-  digital_ocean:
+- name: Discover SSH key
+  digital_ocean_sshkey:
+    oauth_token: "{{ do_api_token }}"
     state: present
-    command: droplet
+    name: "{{ do_ssh_key_name }}"
+    fingerprint: "{{ do_ssh_key_fingerprint }}"
+  register: do_ssh_key
+
+- name: Save DigitalOcean SSH key ID
+  set_fact:
+    do_ssh_key_id: "{{ do_ssh_key.data.ssh_key.id  }}"
+
+- name: DigitalOcean SSH key ID
+  debug:
+    msg: "ID is {{ do_ssh_key_id }}"
+
+- name: Create coder droplet
+  digital_ocean_droplet:
+    state: present
+    unique_name: yes
     name: "{{ do_droplet_name }}"
-    api_token: "{{ do_api_token }}"
-    size_id: "{{ do_size_id }}"
-    region_id: "{{ do_region_id }}"
-    image_id: "{{ do_image_id }}"
-    wait_timeout: 500
+    oauth_token: "{{ do_api_token }}"
+    size: "{{ do_droplet_size }}"
+    region: "{{ do_region }}"
+    image: "{{ do_image }}"
+    wait_timeout: "500"
+    private_networking: yes
+    monitoring: yes
+    backups: no
+    ssh_keys: "{{ do_ssh_key_id }}"
   register: do_coder_droplet
+
+- name: DigitalOcean 'coder' droplet parameters
+  debug:
+    msg: "ID is {{ do_coder_droplet.data.droplet.id }}, and public IP is {{ do_coder_droplet.data.ip_address }}"
+
+- name: Assign floating IP to the coder droplet
+  command: "python {{ role_path }}/bin/assign_floating_ip.py {{ do_api_token }} {{do_floating_ip}} {{do_coder_droplet.data.droplet.id}}"
+  register: do_coder_floating_ip_assignment
+
+- name: Floating IP assignment to the 'coder' droplet result
+  debug:
+    msg: "{{ do_coder_floating_ip_assignment }}"

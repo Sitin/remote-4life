@@ -1,7 +1,6 @@
 ---
 - name: Install python for Ubuntu 20
   hosts: coder
-  connection: ssh
   gather_facts: no
   pre_tasks:
   - name: Install python for Ansible
