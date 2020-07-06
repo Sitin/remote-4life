@@ -1,6 +1,7 @@
 ---
 - name: Install python for Ubuntu 20
-  hosts: all
+  hosts: coder
+  connection: ssh
   gather_facts: no
   pre_tasks:
   - name: Install python for Ansible
@@ -8,7 +9,8 @@
     register: output
     changed_when: output.stdout != ""
 
-- hosts: all
+- name: Provision the main "coder" machine
+  hosts: coder
   vars_files:
   - vars/main.yml
   roles:

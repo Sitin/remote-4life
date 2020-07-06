@@ -1,3 +1,6 @@
-all:
+coder:
   hosts:
     {{ server_domain }}:
+local:
+  hosts:
+    localhost:

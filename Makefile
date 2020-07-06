@@ -21,8 +21,13 @@ ansible_prefix := SSH_DIR=$(ssh_dir) ansible-playbook -u root --private-key=$(ss
 
 all: deploy
 
-deploy: setup
-	@$(ansible_prefix) $(ansible_path)/playbook-main.yml
+deploy: deploy-cloud deploy-coder
+
+deploy-cloud: setup
+	@$(ansible_prefix) $(ansible_path)/playbook-cloud.yml
+
+deploy-coder: setup
+	@$(ansible_prefix) $(ansible_path)/playbook-coder.yml
 
 ssh: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa $(linux_user)@$(server_domain)

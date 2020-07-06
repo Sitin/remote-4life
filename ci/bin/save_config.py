@@ -7,7 +7,7 @@ import yaml
 
 client = boto3.client('ssm')
 
-SECRET_WORDS = 'secret', 'key', 'password'
+SECRET_WORDS = 'secret', 'key', 'password', 'token'
 
 ssm_path = os.environ.get('AWS_SSM_PATH', '/r4l')
 if not ssm_path.endswith('/'):

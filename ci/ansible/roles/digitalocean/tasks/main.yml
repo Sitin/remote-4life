@@ -1,0 +1,16 @@
+---
+#------------------------------------------------------------
+# Setup a DigitalOcean Droplet
+#------------------------------------------------------------
+
+- name: Create DigitalOcean coder droplet
+  digital_ocean:
+    state: present
+    command: droplet
+    name: "{{ do_droplet_name }}"
+    api_token: "{{ do_api_token }}"
+    size_id: "{{ do_size_id }}"
+    region_id: "{{ do_region_id }}"
+    image_id: "{{ do_image_id }}"
+    wait_timeout: 500
+  register: do_coder_droplet
