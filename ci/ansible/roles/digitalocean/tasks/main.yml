@@ -45,4 +45,4 @@
 
 - name: Floating IP assignment to the 'coder' droplet result
   debug:
-    msg: "{{ do_coder_floating_ip_assignment }}"
+    msg: "{{ do_coder_floating_ip_assignment.stdout }}"
