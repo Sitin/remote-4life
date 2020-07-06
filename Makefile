@@ -65,8 +65,13 @@ save-config:
 save-ssh:
 	@python ci/bin/save_ssh.py $(ssh_dir)
 
-clean:
+clean: clean-config clean-ssh
+
+clean-config:
 	@rm -rf config.yaml
+
+clean-ssh:
+	@ssh-keygen -f "$(HOME)/.ssh/known_hosts" -R "$(server_domain)"
 
 env:
 	@env
