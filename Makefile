@@ -29,6 +29,11 @@ deploy-cloud: setup
 deploy-coder: setup
 	@$(ansible_prefix) $(ansible_path)/playbook-coder.yml
 
+destroy: destroy-cloud clean-ssh
+
+destroy-cloud:
+	@$(ansible_prefix) $(ansible_path)/playbook-cloud-destroy.yml
+
 ssh: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa $(linux_user)@$(server_domain)
 

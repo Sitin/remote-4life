@@ -1,0 +1,11 @@
+---
+#------------------------------------------------------------
+# Remove a DigitalOcean Droplet
+#------------------------------------------------------------
+
+- name: Create coder droplet
+  digital_ocean_droplet:
+    state: absent
+    unique_name: yes
+    name: "{{ do_droplet_name }}"
+    oauth_token: "{{ do_api_token }}"
