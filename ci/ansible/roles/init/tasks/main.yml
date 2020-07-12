@@ -17,6 +17,16 @@
   debug:
     msg: Main 'coder' volume name is '{{ volume_name }}'
 
+- name: Check volume filesystem status
+  stat:
+    path: /dev/disk/by-id/{{ volume_name }}
+    follow: yes
+  register: volume_fs_raw
+
+- name: Show main 'coder' filesystem status
+  debug:
+    msg: Main 'coder' volume filesystem status is '{{ volume_fs_raw }}'
+
 - name: Check if the 'coder' main volume is already setup
   command: grep '{{ volume_name }}' /etc/fstab -q
   register: volume_present
