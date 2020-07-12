@@ -1,6 +1,6 @@
 ---
 #------------------------------------------------------------
-# Setup a DigitalOcean Resources
+# Discover a DO SSH key
 #------------------------------------------------------------
 
 - name: Discover SSH key
@@ -19,7 +19,11 @@
   debug:
     msg: "ID is {{ do_ssh_key_id }}"
 
-- name: Create coder droplet
+#------------------------------------------------------------
+# Create the main "coder" DigitalOcean Droplet
+#------------------------------------------------------------
+
+- name: Create 'coder' droplet
   digital_ocean_droplet:
     state: present
     unique_name: yes
@@ -46,3 +50,25 @@
 - name: Floating IP assignment to the 'coder' droplet result
   debug:
     msg: "{{ do_coder_floating_ip_assignment.stdout }}"
+
+#------------------------------------------------------------
+# Ensure that the main "coder" volume exists
+#------------------------------------------------------------
+
+- name: Ensure that the main 'coder' volume exists
+  digital_ocean_block_storage:
+    state: present
+    command: create
+    api_token: "{{ do_api_token }}"
+    region: "{{ do_region }}"
+    block_size: "{{ do_volume_size }}"
+    volume_name: "{{ do_volume_name }}"
+
+- name: Attach nain 'coder' volume to the "coder" droplet
+  digital_ocean_block_storage:
+    state: present
+    command: attach
+    api_token: "{{ do_api_token }}"
+    volume_name: "{{ do_volume_name }}"
+    region: "{{ do_region }}"
+    droplet_id: "{{ do_coder_droplet.data.droplet.id }}"

@@ -76,7 +76,7 @@ clean-config:
 	@rm -rf config.yaml
 
 clean-ssh:
-	@ssh-keygen -f "$(HOME)/.ssh/known_hosts" -R "$(server_domain)"
+	@ssh-keygen -f "$(HOME)/.ssh/known_hosts" -R "$(server_domain)" | echo "No known hosts yet."
 
 env:
 	@env
