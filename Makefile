@@ -37,6 +37,9 @@ destroy-cloud:
 ssh: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa $(linux_user)@$(server_domain)
 
+ssh-root: chmod-ssh-keys
+	@ssh -i ./ci/.ssh/id_rsa root@$(server_domain)
+
 vnc-tunnel: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa -L 59000:localhost:5901 -C -N $(linux_user)@$(server_domain)
 
