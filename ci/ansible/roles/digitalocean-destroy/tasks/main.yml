@@ -3,9 +3,25 @@
 # Remove a DigitalOcean Resources
 #------------------------------------------------------------
 
-- name: Remove coder droplet
+- name: Remove 'coder' droplet
   digital_ocean_droplet:
     state: absent
     unique_name: yes
     name: "{{ do_droplet_name }}"
     oauth_token: "{{ do_api_token }}"
+
+- name: Create a snapshot of the main 'coder' volume
+  command: "python {{ role_path }}/bin/create_volume_snapshot.py {{ do_api_token }} {{do_region}} {{do_volume_name}}"
+  register: do_coder_volume_snapshot_creation
+
+- name: Main 'coder' volume snapshot creation result
+  debug:
+    msg: "{{ do_coder_volume_snapshot_creation.stdout }}"
+
+- name: Remove main 'coder' volume
+  digital_ocean_block_storage:
+    state: absent
+    command: create
+    api_token: "{{ do_api_token }}"
+    region: "{{ do_region }}"
+    volume_name: "{{ do_volume_name }}"

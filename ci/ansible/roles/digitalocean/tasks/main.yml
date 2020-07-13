@@ -52,17 +52,16 @@
     msg: "{{ do_coder_floating_ip_assignment.stdout }}"
 
 #------------------------------------------------------------
-# Ensure that the main "coder" volume exists
+# Ensure that the main "coder" volume exists and attached
 #------------------------------------------------------------
 
 - name: Ensure that the main 'coder' volume exists
-  digital_ocean_block_storage:
-    state: present
-    command: create
-    api_token: "{{ do_api_token }}"
-    region: "{{ do_region }}"
-    block_size: "{{ do_volume_size }}"
-    volume_name: "{{ do_volume_name }}"
+  command: "python {{ role_path }}/bin/create_formatted_volume.py {{ do_api_token }} {{do_region}} {{do_volume_name}} {{do_volume_size}} ext4"
+  register: do_coder_volume_creation
+
+- name: Main 'coder' volume creation result
+  debug:
+    msg: "{{ do_coder_volume_creation.stdout }}"
 
 - name: Attach nain 'coder' volume to the "coder" droplet
   digital_ocean_block_storage:

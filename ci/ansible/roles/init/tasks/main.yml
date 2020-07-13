@@ -1,66 +1,5 @@
 ---
 #------------------------------------------------------------
-# Volume Setup
-# 
-# Based on https://gist.github.com/charignon/72871fe890f4482ccd5bb9d6fd9afcdf
-#------------------------------------------------------------
-
-- name: Get the 'coder' main volume name (raw)
-  shell: ls /dev/disk/by-id/ | grep '{{ do_volume_name }}' | grep -v part
-  register: volume_name_raw
-
-- name: Set 'coder' main volume name fact
-  set_fact:
-    volume_name: "{{ volume_name_raw.stdout }}"
-
-- name: Show the found main 'coder' volume name
-  debug:
-    msg: Main 'coder' volume name is '{{ volume_name }}'
-
-- name: Check volume filesystem status
-  stat:
-    path: /dev/disk/by-id/{{ volume_name }}
-    follow: yes
-  register: volume_fs_raw
-
-- name: Show main 'coder' filesystem status
-  debug:
-    msg: Main 'coder' volume filesystem status is '{{ volume_fs_raw }}'
-
-- name: Check if the 'coder' main volume is already setup
-  command: grep '{{ volume_name }}' /etc/fstab -q
-  register: volume_present
-  ignore_errors: True
-
-- name: Show main 'coder' volume status
-  debug:
-    msg: Main 'coder' volume status is '{{ volume_present }}'
-
-- name: Label the volume
-  command: parted /dev/disk/by-id/{{ volume_name }} mklabel gpt
-  when: volume_present|failed
-
-- name: Create an ext4 partition
-  command: parted -a opt /dev/disk/by-id/{{ volume_name }} mkpart primary ext4 0% 100%
-  when: volume_present|failed
-
-- name: Build the ext4 metadata
-  command: mkfs.ext4 /dev/disk/by-id/{{ volume_name }}-part1
-  when: volume_present|failed
-
-- name: Create the mount point
-  command: mkdir -p '{{ user_home_dir }}'
-  when: volume_present|failed
-
-- name: Mount the main 'coder' volume read-write
-  mount:
-    path: '{{ user_home_dir }}'
-    src: /dev/disk/by-id/{{ volume_name }}-part1
-    fstype: ext4
-    opts: defaults,discard
-    state: mounted
-
-#------------------------------------------------------------
 # User Setup
 #------------------------------------------------------------
 
@@ -83,7 +22,7 @@
     comment: Main user
     create_home: yes
     home: "{{ user_home_dir }}"
-    groups: admin, sudo, wheel
+    groups: [admin, sudo, wheel]
     shell: /usr/bin/bash
     append: yes
     state: present
