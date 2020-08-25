@@ -23,10 +23,31 @@ workon remote-4life
 Initialize the project:
 
 ```shell script
-make init
+make setup
 ```
 
 Then open `.env` file and fill the parameters.
+
+Configuration
+-------------
+
+Perform this script to load parameters to `config.yaml`:
+
+```shell script
+make load
+```
+
+Edit `config.yaml` and upload it:
+
+```shell script
+make load
+```
+
+Clean up the config (for safety):
+
+```shell script
+make clean
+```
 
 Deploy
 ------
@@ -34,3 +55,18 @@ Deploy
 ```shell script
 make
 ```
+
+SSH to Server
+-------------
+
+```shell script
+make ssh
+```
+
+Destroy
+-------
+
+```shell script
+make destroy
+```
+
