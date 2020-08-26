@@ -1,0 +1,23 @@
+---
+#------------------------------------------------------------
+# Create the main directory for Docker apps
+#------------------------------------------------------------
+
+- name: Create working directory for docker apps
+  file:
+    path: "{{ docker_apps_work_dir }}"
+    state: directory
+    mode: '0755'
+  become: yes
+  become_user: "{{ linux_user }}"
+
+#------------------------------------------------------------
+# Environment Setup
+#------------------------------------------------------------
+
+- name: generate .env file
+  template:
+    src: "../templates/.env.template"
+    dest: "{{ docker_apps_work_dir }}/.env"
+  become: yes
+  become_user: "{{ linux_user }}"

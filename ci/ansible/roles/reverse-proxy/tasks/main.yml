@@ -3,6 +3,15 @@
 # Start nginx + Let's Encrypt reverse proxy
 #------------------------------------------------------------
 
+- name: Create nginx+SSL Docker configuration
+  template:
+    src: "../templates/nginx-proxy-compose.yaml"
+    dest: "{{ nginx_proxy_compose_file }}"
+  become: yes
+  become_user: "{{ linux_user }}"
+  notify:
+    - Restart Docker reverse proxy service
+
 - name: Create nginx+SSL service
   template:
     src: "../templates/docker-reverse-proxy.service"

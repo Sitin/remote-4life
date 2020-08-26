@@ -1,2 +1,2 @@
 ---
-ihaskell_compose_file: "{{ coder_apps_work_dir }}/ihaskell-compose.yaml"
+ihaskell_compose_file: "{{ docker_apps_work_dir }}/ihaskell-compose.yaml"

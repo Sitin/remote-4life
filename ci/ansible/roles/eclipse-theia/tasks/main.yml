@@ -3,6 +3,15 @@
 # Setup Eclipse Theia IDE
 #------------------------------------------------------------
 
+- name: Create Theia Docker configuration
+  template:
+    src: "../templates/eclipse-theia-compose.yaml"
+    dest: "{{ theia_compose_file }}"
+  become: yes
+  become_user: "{{ linux_user }}"
+  notify:
+    - Restart Theia service
+
 - name: Setup basic auth password for Theia
   htpasswd:
     path: "/etc/nginx/htpasswd/{{ theia_domain }}"

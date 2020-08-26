@@ -5,7 +5,7 @@ After=docker.service
 
 [Service]
 Restart=always
-WorkingDirectory={{ coder_apps_work_dir }}
+WorkingDirectory={{ docker_apps_work_dir }}
 User={{ linux_user }}
 ExecStart=/usr/bin/docker-compose -f {{ nginx_proxy_compose_file }} up
 ExecStop=/usr/bin/docker-compose -f {{ nginx_proxy_compose_file }} down
