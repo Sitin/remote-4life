@@ -24,7 +24,7 @@
     name: ihaskell
     enabled: yes
 
-- name: Make shure that iHaskell service is running
+- name: Make shure that iHaskell service is restarted and running
   service:
-    state: started
+    state: restarted
     name: ihaskell
