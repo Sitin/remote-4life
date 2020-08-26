@@ -41,7 +41,7 @@ ssh-root: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa root@$(server_domain)
 
 vnc-tunnel: chmod-ssh-keys
-	@ssh -L 59000:localhost:5901 -C -N $(linux_user)@$(server_domain)
+	@ssh -i ./ci/.ssh/id_rsa -L 59000:localhost:5901 -C -N $(linux_user)@$(server_domain)
 
 8888-tunnel: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa -L 8888:localhost:8888 -C -N $(linux_user)@$(server_domain)
