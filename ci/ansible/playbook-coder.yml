@@ -8,13 +8,21 @@
     register: output
     changed_when: output.stdout != ""
 
-- name: Provision the main "coder" machine
+- name: Provision the main "coder" machine basics
   hosts: coder
   vars_files:
   - vars/main.yml
   roles:
   - init
   - system-dependencies
+  tasks:
+  - meta: flush_handlers
+
+- name: Provision the main "coder" machine applications
+  hosts: coder
+  vars_files:
+  - vars/main.yml
+  roles:
   - repository-setup
   - docker-apps-setup
   - security
