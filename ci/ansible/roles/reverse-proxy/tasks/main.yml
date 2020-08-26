@@ -15,7 +15,7 @@
     name: docker-reverse-proxy
     enabled: yes
 
-- name: Make shure that nginx+SSL service is running
+- name: Make shure that nginx+SSL service is restarted and running
   service:
-    state: started
+    state: restarted
     name: docker-reverse-proxy
