@@ -12,5 +12,5 @@ services:
     environment:
       - VIRTUAL_HOST=${IHASKELL_DOMAIN}
       - LETSENCRYPT_HOST=${IHASKELL_DOMAIN}
-      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_ENABLE_LAB=no
       - JUPYTER_TOKEN=x
