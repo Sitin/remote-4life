@@ -64,9 +64,6 @@ load-config:
 load-ssh:
 	@python ci/bin/load_ssh.py $(ssh_dir)
 
-ensure-config:
-	test -e config.yaml || cp config-template.yaml config.yaml
-
 save-config:
 	@python ci/bin/save_config.py $(current_dir)config.yaml
 

@@ -9,20 +9,24 @@
     state: latest
     update_cache: yes
 
-- name: Copy password script for VNC
-  template:
-    src: create_password.sh
-    dest: /home/pass.sh
-    mode: 0744
-
-- name: Run password script for VNC
-  shell: . /home/pass.sh
-
 - name: Create .vnc directory
   file:
     path: "{{ user_home_dir }}/.vnc/"
     state: directory
     mode: 0775
+  become: yes
+  become_user: "{{ linux_user }}"
+
+- name: Copy password script for VNC
+  template:
+    src: create_password.sh
+    dest: "{{ user_home_dir }}/.vnc/pass.sh"
+    mode: 0744
+  become: yes
+  become_user: "{{ linux_user }}"
+
+- name: Run password script for VNC
+  shell: ". {{ user_home_dir }}/.vnc/pass.sh"
   become: yes
   become_user: "{{ linux_user }}"
 
