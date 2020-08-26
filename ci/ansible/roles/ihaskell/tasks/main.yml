@@ -11,6 +11,8 @@
     owner: root
     group: www-data
     mode: 0644
+  notify:
+  - Restart iHaskell service
 
 - name: Create iHaskell service
   template:
@@ -26,5 +28,5 @@
 
 - name: Make shure that iHaskell service is restarted and running
   service:
-    state: restarted
+    state: started
     name: ihaskell

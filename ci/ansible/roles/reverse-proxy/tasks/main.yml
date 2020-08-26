@@ -10,6 +10,18 @@
   notify:
   - Restart Docker reverse proxy service
 
+- name: Create /etc/nginx directory
+  file:
+    path: "/etc/nginx"
+    state: directory
+
+- name: Create proxy.conf file for nginx
+  template:
+    src: "../templates/proxy.conf"
+    dest: /etc/nginx/proxy.conf
+  notify:
+  - Restart Docker reverse proxy service
+
 - name: Enable nginx+SSL service
   service:
     name: docker-reverse-proxy
