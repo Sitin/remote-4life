@@ -16,6 +16,7 @@
   - init
   - system-dependencies
   - repository-setup
+  - docker-apps-setup
   - security
   - reverse-proxy
   - ihaskell
