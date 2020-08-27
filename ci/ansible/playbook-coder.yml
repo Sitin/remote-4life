@@ -14,19 +14,19 @@
   - vars/main.yml
   roles:
   - init
-  - system-dependencies
+#  - system-dependencies
   tasks:
   - meta: flush_handlers
 
-- name: Provision the main "coder" machine applications
-  hosts: coder
-  vars_files:
-  - vars/main.yml
-  roles:
-  - repository-setup
-  - docker-apps-setup
-  - security
-  - reverse-proxy
-  - ihaskell
-  - eclipse-theia
-  - vnc-server
+#- name: Provision the main "coder" machine applications
+#  hosts: coder
+#  vars_files:
+#  - vars/main.yml
+#  roles:
+#  - repository-setup
+#  - docker-apps-setup
+#  - security
+#  - reverse-proxy
+#  - ihaskell
+#  - eclipse-theia
+#  - vnc-server

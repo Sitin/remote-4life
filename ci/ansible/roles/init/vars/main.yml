@@ -1,0 +1,3 @@
+---
+persistent_etc_dir: "/mnt/{{ do_volume_name }}/etc"
+nginx_persistent_conf_dir: "{{ persistent_etc_dir }}/nginx"

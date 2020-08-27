@@ -57,7 +57,27 @@
     state: enabled
 
 #------------------------------------------------------------
-# Setup Directories
+# Setup Persistent Directories
+#------------------------------------------------------------
+
+- name: Create a persistent /etc directory if it does not exist
+  file:
+    path: "{{ persistent_etc_dir }}"
+    state: directory
+
+- name: Create a persintent nginx config directory
+  file:
+    path: "{{ persistent_etc_dir }}/nginx"
+    state: directory
+
+- name: Link a persintent nginx config directory to /etc/nginx
+  file:
+    src: "{{ persistent_etc_dir }}/nginx"
+    dest: /etc/nginx"
+    state: link
+
+#------------------------------------------------------------
+# Setup Working Directories
 #------------------------------------------------------------
 
 - name: Create a workspace directory if it does not exist
