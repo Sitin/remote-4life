@@ -73,7 +73,7 @@
 - name: Link a persintent nginx config directory to /etc/nginx
   file:
     src: "{{ persistent_etc_dir }}/nginx"
-    dest: /etc/nginx"
+    dest: /etc/nginx
     state: link
 
 #------------------------------------------------------------
@@ -87,3 +87,17 @@
     mode: '0755'
   become: yes
   become_user: "{{ linux_user }}"
+
+#------------------------------------------------------------
+# Log a deploy
+#------------------------------------------------------------
+- name: Create a deploy log file
+  file:
+    path: "{{ deploy_log }}"
+    state: touch
+
+- name: Log that deploy initialization is completed
+  lineinfile:
+    path: "{{ deploy_log }}"
+    line: "[{{ now() }}] Deploy initialization completed."
+    insertbefore: BOF
