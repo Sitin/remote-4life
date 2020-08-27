@@ -63,7 +63,7 @@
   debug:
     msg: "{{ do_coder_volume_creation.stdout }}"
 
-- name: Attach nain 'coder' volume to the "coder" droplet
+- name: Attach the main 'coder' volume to the "coder" droplet
   digital_ocean_block_storage:
     state: present
     command: attach
