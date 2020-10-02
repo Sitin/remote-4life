@@ -1,0 +1,13 @@
+---
+aws_region: "{{ lookup('env', 'AWS_DEFAULT_REGION') }}"
+aws_vpc_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_vpc_name') }}"
+aws_vpc_route_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_vpc_route_name') }}"
+aws_public_subnet_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_public_subnet_name') }}"
+aws_main_ec2_instance_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_main_ec2_instance_name') }}"
+aws_main_eip_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_main_eip_name') }}"
+aws_main_security_group_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_main_security_group_name') }}"
+aws_vpc_cidr_block: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_vpc_cidr_block') }}"
+aws_ssh_key_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_ssh_key_name') }}"
+aws_instance_type: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_instance_type') }}"
+aws_ec2_image: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_ec2_image') }}"
+aws_main_subnet_cidr_block: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_main_subnet_cidr_block') }}"

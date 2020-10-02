@@ -1,0 +1,206 @@
+---
+#------------------------------------------------------------
+# Create a VPC
+#------------------------------------------------------------
+
+- name: Create the main coder VPC
+  amazon.aws.ec2_vpc_net:
+    name: "{{ aws_vpc_name }}"
+    cidr_block: "{{ aws_vpc_cidr_block }}"
+    region: "{{ aws_region }}"
+    tags:
+      module: coder
+  register: coder_vpc
+
+#------------------------------------------------------------
+# Create the main coder subnet
+#------------------------------------------------------------
+
+- name: Create the main coder subnet
+  amazon.aws.ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ coder_vpc.vpc.id }}"
+    cidr: "{{ aws_main_subnet_cidr_block }}"
+    region: "{{ aws_region }}"
+    tags:
+      Name: "{{ aws_public_subnet_name }}"
+      module: coder
+  register: coder_subnet
+
+#------------------------------------------------------------
+# Setup Internet gateway for the main coder VPC
+#------------------------------------------------------------
+
+- name: Ensure that the main coder VPC has an Internet gateway
+  community.aws.ec2_vpc_igw:
+    vpc_id: "{{ coder_vpc.vpc.id }}"
+    state: present
+  register: coder_igw
+
+- name: Create Internet gateway router for the main coder VPC
+  ec2_vpc_route_table:
+    vpc_id: "{{ coder_vpc.vpc.id }}"
+    region: "{{ aws_region }}"
+    subnets:
+      - "{{ coder_subnet.subnet.id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ coder_igw.gateway_id  }}"
+    tags:
+      Name: "{{ aws_vpc_route_name }}"
+      module: coder
+
+#------------------------------------------------------------
+# Create the main coder security group
+#------------------------------------------------------------
+
+- name: Create the main coder security group
+  amazon.aws.ec2_group:
+    name: "{{ aws_main_security_group_name }}"
+    description: The main coder security group
+    vpc_id: "{{ coder_vpc.vpc.id }}"
+    region: "{{ aws_region }}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
+    rules_egress:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/96
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/96
+    tags:
+      module: coder
+  register: coder_security_group
+
+#------------------------------------------------------------
+# Create SSH key pair
+#------------------------------------------------------------
+
+- name: Create the main coder SSH key for EC2
+  amazon.aws.ec2_key:
+    name: "{{ aws_ssh_key_name }}"
+    key_material: "{{ lookup('file', '{{ playbook_dir }}/../.ssh/id_rsa.pub') }}"
+    region: "{{ aws_region }}"
+  register: coder_ssh_key
+
+#------------------------------------------------------------
+# Create EC2 instance
+#------------------------------------------------------------
+
+- name: Get the existing main coder EC2 instance ID
+  set_fact: coder_ec2_instance_id="{{ lookup('aws_ssm', '{{ aws_ssm_path }}/state/coder_ec2_instance.id') | default('N/A', true) }}"
+
+- name: Output the existing main coder EC2 instance ID
+  ansible.builtin.debug:
+    msg: "The main coder EC2 instance is available with ID='{{ coder_ec2_instance_id }}'"
+  when:
+    - coder_ec2_instance_id != "N/A"
+
+- name: Create the main coder EC2 instance (if required)
+  amazon.aws.ec2:
+    key_name: "{{ aws_ssh_key_name }}"
+    group: "{{ coder_security_group.group_name }}"
+    instance_type: "{{ aws_instance_type }}"
+    image: "{{ aws_ec2_image }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+#    volumes:
+#      - device_name: /dev/sdb
+##        snapshot: snap-abcdef12
+#        volume_size: 10
+    monitoring: yes
+    vpc_subnet_id: "{{ coder_subnet.subnet.id }}"
+    assign_public_ip: yes
+    instance_tags:
+      Name: "{{ aws_main_ec2_instance_name }}"
+      module: coder
+  register: coder_ec2_instance
+  when:
+    - coder_ec2_instance_id == "N/A"
+
+- name: Output the main coder EC2 instance creation result (if that was the case)
+  ansible.builtin.debug:
+    msg: "{{ coder_ec2_instance }}"
+  when:
+    - coder_ec2_instance_id == "N/A"
+
+- name: Register the newly created created main coder instance ID (if that was the case)
+  set_fact: coder_ec2_instance_id="{{ coder_ec2_instance.instance_ids[0] }}"
+  when:
+    - coder_ec2_instance_id == "N/A"
+
+- name: Save the main coder EC2 instance ID to parameter store
+  community.aws.aws_ssm_parameter_store:
+    name: "{{ aws_ssm_path }}/state/coder_ec2_instance.id"
+    description: "The main coder EC2 instance ID"
+    value: "{{ coder_ec2_instance_id }}"
+
+#------------------------------------------------------------
+# Create and assign elastic IP
+#------------------------------------------------------------
+
+- name: Get the existing main coder elastic IP
+  set_fact: coder_eip="{{ lookup('aws_ssm', '{{ aws_ssm_path }}/state/coder_eip') | default('N/A', true) }}"
+
+- name: Allocate or reuse elastic IP (tagged by 'coder')
+  community.aws.ec2_eip:
+    region: "{{ aws_region }}"
+    in_vpc: true
+    reuse_existing_ip_allowed: true
+    tag_name: Name
+    tag_value: "{{ aws_main_eip_name }}"
+  register: coder_eip_new
+  when:
+    - coder_eip == "N/A"
+
+- name: Name the main coder elastic IP
+  amazon.aws.ec2_tag:
+    region: "{{ aws_region }}"
+    resource: "{{ coder_eip_new.allocation_id }}"
+    state: present
+    tags:
+      Name: "{{ aws_main_eip_name }}"
+      module: coder
+  when:
+    - coder_eip == "N/A"
+
+- name: Save the newly created main coder elastic IP
+  set_fact: coder_eip="{{ coder_eip_new.public_ip }}"
+  when:
+    - coder_eip == "N/A"
+
+- name: Associate the elastic IP with the main coder EC2 instance
+  community.aws.ec2_eip:
+    device_id: "{{ coder_ec2_instance_id }}"
+    ip: "{{ coder_eip }}"
+
+- name: Save the main coder elastic IP to parameter store
+  community.aws.aws_ssm_parameter_store:
+    name: "{{ aws_ssm_path }}/state/coder_eip"
+    description: "The main coder elastic IP"
+    value: "{{ coder_eip }}"
+
+#------------------------------------------------------------
+# Setup DNS routing
+#------------------------------------------------------------
+
+- name: Add the main coder DNS record and wait until the changes have been replicated
+  community.aws.route53:
+    state: present
+    zone: "{{ root_domain }}"
+    record: "{{ server_domain }}"
+    overwrite: true
+    type: A
+    ttl: 300
+    value: "{{ coder_eip }}"
+    wait: yes

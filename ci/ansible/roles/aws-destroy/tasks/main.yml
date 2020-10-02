@@ -1,0 +1,26 @@
+---
+#------------------------------------------------------------
+# Destroy the main coder EC2 instance
+#------------------------------------------------------------
+
+- name: Get the existing main coder EC2 instance ID
+  set_fact: coder_ec2_instance_id="{{ lookup('aws_ssm', '{{ aws_ssm_path }}/state/coder_ec2_instance.id') | default('N/A', true) }}"
+
+- name: Output the existing main coder EC2 instance ID
+  ansible.builtin.debug:
+    msg: "The main coder EC2 instance is available with ID='{{ coder_ec2_instance_id }}'"
+  when:
+    - coder_ec2_instance_id != "N/A"
+
+- name: Destroy the main coder EC2 instance (if required)
+  amazon.aws.ec2:
+    instance_ids:
+      - "{{ coder_ec2_instance_id}}"
+    state: absent
+  when:
+    - coder_ec2_instance_id != "N/A"
+
+- name: Delete the main coder EC2 instance ID parameter store key
+  community.aws.aws_ssm_parameter_store:
+    name: "{{ aws_ssm_path }}/state/coder_ec2_instance.id"
+    state: absent

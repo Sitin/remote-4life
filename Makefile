@@ -12,6 +12,9 @@ $(shell test -e .env || cp .env-template .env)
 include .env
 export $(shell sed 's/=.*//' .env)
 
+# Fix Ansible on OS X
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
 ssh_private_key := $(abspath $(ssh_dir)/id_rsa)
 server_domain := $(shell env `cat .env` python ci/bin/load_param.py server_domain)
 linux_user := $(shell env `cat .env` python ci/bin/load_param.py linux_user)
@@ -22,6 +25,9 @@ ansible_prefix := SSH_DIR=$(ssh_dir) ansible-playbook -u root --private-key=$(ss
 all: deploy
 
 deploy: deploy-cloud deploy-coder
+
+install:
+	@ansible-galaxy collection install -r ci/ansible/requirements.yml
 
 deploy-cloud: setup
 	@$(ansible_prefix) $(ansible_path)/playbook-cloud.yml
