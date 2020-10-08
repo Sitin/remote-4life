@@ -8,8 +8,9 @@ User={{ linux_user }}
 Group={{ linux_user }}
 WorkingDirectory={{ user_home_dir }}
 
-PIDFile={{ user_home_dir }}/.vnc/%H:%i.pid
-ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+# Fix for start failure due to a timeout
+#PIDFile={{ user_home_dir }}/.vnc/%H:%i.pid
+#ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1 && rm {{ user_home_dir }}/.vnc/%H:%i.pid
 ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 -localhost :%i
 ExecStop=/usr/bin/vncserver -kill :%i
 
