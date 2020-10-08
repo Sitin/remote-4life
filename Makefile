@@ -18,9 +18,10 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 ssh_private_key := $(abspath $(ssh_dir)/id_rsa)
 server_domain := $(shell env `cat .env` python ci/bin/load_param.py server_domain)
 linux_user := $(shell env `cat .env` python ci/bin/load_param.py linux_user)
+root_user := $(shell env `cat .env` python ci/bin/load_param.py root_user)
 
 ansible_path := ./ci/ansible
-ansible_prefix := SSH_DIR=$(ssh_dir) ansible-playbook -u root --private-key=$(ssh_private_key) -i $(ansible_path)/inventory.yml
+ansible_prefix := SSH_DIR=$(ssh_dir) ansible-playbook -u $(root_user) --private-key=$(ssh_private_key) -i $(ansible_path)/inventory.yml
 
 all: deploy
 
@@ -44,7 +45,7 @@ ssh: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa $(linux_user)@$(server_domain)
 
 ssh-root: chmod-ssh-keys
-	@ssh -i ./ci/.ssh/id_rsa root@$(server_domain)
+	@ssh -i ./ci/.ssh/id_rsa $(root_user)@$(server_domain)
 
 vnc-tunnel: chmod-ssh-keys
 	@ssh -i ./ci/.ssh/id_rsa -L 59000:localhost:5901 -C -N $(linux_user)@$(server_domain)

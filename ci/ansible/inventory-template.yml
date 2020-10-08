@@ -2,6 +2,8 @@ coder:
   hosts:
     {{ server_domain }}:
       connection: ssh
+      ansible_become: true
+      ansible_become_user: root
 local:
   hosts:
     localhost:

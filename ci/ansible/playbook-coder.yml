@@ -1,10 +1,10 @@
 ---
-- name: Install python for Ubuntu 20
+- name: Install python for remote machine
   hosts: coder
   gather_facts: no
   pre_tasks:
   - name: Install python for Ansible
-    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python3)"
+    raw: bash -c "test -e /usr/bin/python || (sudo apt -qqy update && sudo apt install -qy python3)"
     register: output
     changed_when: output.stdout != ""
 
@@ -14,19 +14,19 @@
   - vars/main.yml
   roles:
   - init
-#  - system-dependencies
+  - system-dependencies
   tasks:
   - meta: flush_handlers
 
-#- name: Provision the main "coder" machine applications
-#  hosts: coder
-#  vars_files:
-#  - vars/main.yml
-#  roles:
-#  - repository-setup
+- name: Provision the main "coder" machine applications
+  hosts: coder
+  vars_files:
+  - vars/main.yml
+  roles:
+  - vnc-server
+  - repository-setup
 #  - docker-apps-setup
 #  - security
 #  - reverse-proxy
 #  - ihaskell
 #  - eclipse-theia
-#  - vnc-server

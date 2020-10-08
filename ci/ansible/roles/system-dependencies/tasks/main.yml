@@ -32,11 +32,16 @@
 
 - name: Install additional dependencies
   apt:
-    name: git, python3-pip, python-is-python3, supervisor, apache2-utils
+    name: git, python3-pip, python-is-python3
     state: latest
     update_cache: yes
 
-- name: Make sure that supervisord service is running
-  systemd:
-    state: started
-    name: supervisor
+#------------------------------------------------------------
+# Log a deploy
+#------------------------------------------------------------
+
+- name: Log that essential dependencies have been installed
+  lineinfile:
+    path: "{{ deploy_log }}"
+    line: "[{{ now() }}] Essential dependencies have been installed."
+    insertbefore: BOF

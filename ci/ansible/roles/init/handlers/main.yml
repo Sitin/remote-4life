@@ -1,5 +1,7 @@
 ---
 - name: Reload SSH service
-  service:
+  systemd:
     state: reloaded
     name: ssh
+  become: yes
+  become_user: root

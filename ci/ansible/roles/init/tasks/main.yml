@@ -1,5 +1,19 @@
 ---
 #------------------------------------------------------------
+# System upgrade
+#------------------------------------------------------------
+- name: Update apt
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+
+#------------------------------------------------------------
 # User Setup
 #------------------------------------------------------------
 
@@ -22,7 +36,7 @@
     comment: Main user
     create_home: yes
     home: "{{ user_home_dir }}"
-    groups: [admin, sudo, wheel]
+    groups: [adm, wheel]
     shell: /usr/bin/bash
     append: yes
     state: present
@@ -42,39 +56,8 @@
     user: "{{ linux_user }}"
     state: present
     key: "{{ lookup('file', '{{ ssh_key_file }}') }}"
-
-#------------------------------------------------------------
-# Basic Firewall Setup
-#------------------------------------------------------------
-
-- name: Allow inbound traffic to OpenSSH
-  ufw:
-    rule: allow
-    name: OpenSSH
-
-- name: Enable UFW
-  ufw:
-    state: enabled
-
-#------------------------------------------------------------
-# Setup Persistent Directories
-#------------------------------------------------------------
-
-- name: Create a persistent /etc directory if it does not exist
-  file:
-    path: "{{ persistent_etc_dir }}"
-    state: directory
-
-- name: Create a persintent nginx config directory
-  file:
-    path: "{{ persistent_etc_dir }}/nginx"
-    state: directory
-
-- name: Link a persintent nginx config directory to /etc/nginx
-  file:
-    src: "{{ persistent_etc_dir }}/nginx"
-    dest: /etc/nginx
-    state: link
+  become: yes
+  become_user: "{{ linux_user }}"
 
 #------------------------------------------------------------
 # Setup Working Directories

@@ -105,19 +105,27 @@
   when:
     - coder_ec2_instance_id != "N/A"
 
-- name: Create the main coder EC2 instance (if required)
+- name: Get the existing main coder AMI
+  set_fact: coder_ec2_image="{{ lookup('aws_ssm', '{{ aws_ssm_path }}/state/coder_ec2_image') | default('{{ aws_base_ec2_image }}', true) }}"
+
+- name: Output the main coder AMI name
+  ansible.builtin.debug:
+    msg: "The main coder EC2 instance image is '{{ coder_ec2_image }}' (base is '{{ aws_base_ec2_image }}')"
+
+- name: Create a main coder EC2 instance
   amazon.aws.ec2:
     key_name: "{{ aws_ssh_key_name }}"
     group: "{{ coder_security_group.group_name }}"
     instance_type: "{{ aws_instance_type }}"
-    image: "{{ aws_ec2_image }}"
+    image: "{{ coder_ec2_image }}"
     wait: yes
     wait_timeout: 500
     count: 1
-#    volumes:
-#      - device_name: /dev/sdb
-##        snapshot: snap-abcdef12
-#        volume_size: 10
+    volumes:
+      - device_name: /dev/xvda
+        volume_type: gp2
+        volume_size: "{{ aws_root_volume_size }}"
+        delete_on_termination: true
     monitoring: yes
     vpc_subnet_id: "{{ coder_subnet.subnet.id }}"
     assign_public_ip: yes

@@ -9,5 +9,7 @@ aws_main_security_group_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_main
 aws_vpc_cidr_block: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_vpc_cidr_block') }}"
 aws_ssh_key_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_ssh_key_name') }}"
 aws_instance_type: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_instance_type') }}"
-aws_ec2_image: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_ec2_image') }}"
+aws_base_ec2_image: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_base_ec2_image') }}"
 aws_main_subnet_cidr_block: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_main_subnet_cidr_block') }}"
+aws_root_volume_size: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_root_volume_size') }}"
+aws_main_ec2_snapshot_name: "{{ lookup('aws_ssm', '{{ aws_ssm_path }}/aws_main_ec2_snapshot_name') }}"

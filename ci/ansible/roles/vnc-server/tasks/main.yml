@@ -14,29 +14,34 @@
     path: "{{ user_home_dir }}/.vnc/"
     state: directory
     mode: 0775
-  become: yes
-  become_user: "{{ linux_user }}"
+    owner: "{{ linux_user }}"
+    group: "{{ linux_user }}"
 
 - name: Copy password script for VNC
   template:
     src: create_password.sh
     dest: "{{ user_home_dir }}/.vnc/pass.sh"
     mode: 0744
-  become: yes
-  become_user: "{{ linux_user }}"
+    owner: "{{ linux_user }}"
+    group: "{{ linux_user }}"
 
 - name: Run password script for VNC
   shell: ". {{ user_home_dir }}/.vnc/pass.sh"
   become: yes
   become_user: "{{ linux_user }}"
 
+- name: Remove VNC password script
+  file:
+    path: "{{ user_home_dir }}/.vnc/pass.sh"
+    state: absent
+
 - name: Copy the modified "xstartup" file for VNC
   template:
     src: xstartup.sh
     dest: "{{ user_home_dir }}/.vnc/xstartup"
     mode: 0744
-  become: yes
-  become_user: "{{ linux_user }}"
+    owner: "{{ linux_user }}"
+    group: "{{ linux_user }}"
 
 - name: Create VNC Server service
   template:
